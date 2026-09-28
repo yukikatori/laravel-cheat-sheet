@@ -20,3 +20,16 @@ $this->assertSame($coach->id, $meeting->coach_id);
 $this->assertTrue($result->relationLoaded('enrollment'));
 $this->assertTrue($result->enrollment->relationLoaded('certification'));
 $this->assertTrue($result->relationLoaded('coach'));
+
+// 例外の設置、StoreActionなどで使うときはActionの呼び出し直前に設置する
+$this->expectException(InsufficientMeetingQuotaException::class);
+
+// データベースに情報があるか
+$this->assertDatabaseHas('meetings', [
+    'id' => $meeting->id,
+    'status' => MeetingStatus::Canceled->value,
+    'canceled_by_user_id' => $student->id,
+]);
+
+// nullでないことの確認
+$this->assertNotNull($meeting->fresh()->canceled_at);
