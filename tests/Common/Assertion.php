@@ -33,3 +33,15 @@ $this->assertDatabaseHas('meetings', [
 
 // nullでないことの確認
 $this->assertNotNull($meeting->fresh()->canceled_at);
+
+// レスポンスのステータスコードが 200〜299 の成功系であること
+$response->assertSuccessful();
+
+// レスポンスが 403 Forbidden を返していること
+$response->assertForbidden();
+
+// リダイレクトの確認
+$response->assertRedirect(route('qa-board.show', $thread));
+
+// バリデーションエラーの確認
+$response->assertJsonValidationErrors('certification_id');
