@@ -4,6 +4,13 @@
 $this->assertTrue($meetings->contains('id', $enrollment1Meeting->id));
 $this->assertFalse($meetings->contains('id', $enrollment2Meeting->id));
 
+// true or false
+$policy = new QaThreadPolicy;
+
+$this->assertTrue($policy->view($admin, $thread));
+$this->assertTrue($policy->view($coach, $thread));
+$this->assertTrue($policy->view($student, $thread));
+
 // 同じことの確認、順番を確認することもできる
 $this->assertSame(
     [
