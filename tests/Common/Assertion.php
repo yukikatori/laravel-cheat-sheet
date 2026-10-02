@@ -38,6 +38,13 @@ $this->assertDatabaseHas('meetings', [
     'canceled_by_user_id' => $student->id,
 ]);
 
+$this->assertDatabaseMissing('qa_threads', [
+    'user_id' => $coach->id,
+    'certification_id' => $certification->id,
+    'title' => 'test',
+    'body' => 'content',
+]);
+
 // nullでないことの確認
 $this->assertNotNull($meeting->fresh()->canceled_at);
 
@@ -47,8 +54,26 @@ $response->assertSuccessful();
 // レスポンスが 403 Forbidden を返していること
 $response->assertForbidden();
 
+// レスポンスのHTTPステータスが 404 Not Found であることを確認する
+$response->assertNotFound();
+
 // リダイレクトの確認
 $response->assertRedirect(route('qa-board.show', $thread));
 
 // バリデーションエラーの確認
 $response->assertJsonValidationErrors('certification_id');
+
+// ビューへ渡されたデータに特定の値が含まれているか
+// $response->assertViewHas('key', 'value');　keyはviewに渡されている変数
+$response->assertOk();
+$response->assertViewIs('meeting.index');
+$response->assertViewHas('meetings', fn ($meetings) => $meetings->contains('id', $own->id)
+    && ! $meetings->contains('id', $other->id));
+
+// ビューへ渡されたデータに特定の値が含まれているか（単体）
+$response->assertViewHas('thread', fn ($thread) => 
+    $thread->id === $targetThread->id
+);
+
+// セッションエラーの確認
+$response->assertSessionHas('error', '回答がついているスレッドは削除できません。');
