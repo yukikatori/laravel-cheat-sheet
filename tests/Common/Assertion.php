@@ -77,3 +77,7 @@ $response->assertViewHas('thread', fn ($thread) =>
 
 // セッションエラーの確認
 $response->assertSessionHas('error', '回答がついているスレッドは削除できません。');
+$response->assertSessionHas('success', '面談パックを削除しました。');
+
+// データの個数の確認
+$this->assertDatabaseCount('meeting_packs', 0);
