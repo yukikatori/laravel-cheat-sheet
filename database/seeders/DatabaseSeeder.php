@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Seeders;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     */
+    public function run(): void
+    {
+        $this->call([
+            UserSeeder::class,
+            GoogleCalendarConnectionSeeder::class,
+            AvatarSeeder::class,
+            PlanSeeder::class,
+            UserLifecycleSeeder::class,
+            MeetingPackSeeder::class,
+            MeetingQuotaPaymentSeeder::class,
+            CertificationCategorySeeder::class,
+            CertificationSeeder::class,
+            InvitationSeeder::class,
+            EnrollmentSeeder::class,
+            EnrollmentGoalSeeder::class,
+            EnrollmentNoteSeeder::class,
+            MentoringSeeder::class,
+            ContentSeeder::class,
+            LearningSeeder::class,
+            QuizAnsweringSeeder::class,
+            MockExamSeeder::class,
+            ChatSeeder::class,
+            AiChatSeeder::class,
+            CertificateSeeder::class,
+            QaBoardSeeder::class,
+            NotificationSeeder::class,
+            AnnouncementSeeder::class,
+        ]);
+    }
+}
