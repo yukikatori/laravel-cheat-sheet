@@ -81,3 +81,23 @@ $response->assertSessionHas('success', '面談パックを削除しました。'
 
 // データの個数の確認
 $this->assertDatabaseCount('meeting_packs', 0);
+
+// テキストが見えることの確認
+$response->assertSeeText('test');
+
+// リンクの確認
+// assertSeeは、デフォルトで探す文字列をHTMLエスケープするからです。
+// 例えば
+// $response->assertSee('action="http://localhost/tasks/1/complete"');
+// では、"が&quot;に変換され、次の文字列を探してしまいます。
+// action=&quot;http://localhost/tasks/1/complete&quot;
+// 実際のHTMLはaction="..."なので一致しません。
+// $response->assertSee(
+//     'action="'.route('tasks.complete', $task).'"',
+//     false
+// );
+// falseを渡すと、指定した文字列をそのまま探すため一致します。通常の表示テキストを確認するときは、省略したままで大丈夫です。
+$response->assertSee(
+    'action="'.route('tasks.complete', $task).'"',
+    false
+);
