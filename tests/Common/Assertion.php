@@ -82,8 +82,18 @@ $response->assertSessionHas('success', '面談パックを削除しました。'
 // データの個数の確認
 $this->assertDatabaseCount('meeting_packs', 0);
 
-// テキストが見えることの確認
-$response->assertSeeText('test');
+$this->assertCount(1, $categories);
+$this->assertSame(2, $categories->first()->tasks_count);
+
+// テキストが見えることの確認、assertSeeだとタグは見ない
+// - フォームの属性や選択状態：assertSee(..., false)
+//  <!-- タイトル：タグの属性に入る --> <input type="text" value="テストタイトル">
+// - 説明などタグ内の文字：assertSeeText(...)
+//  <!-- 説明：タグの内側に入る --> <textarea>contents of the test task</textarea>
+$response->assertSee('テストタイトル', false);
+$response->assertSeeText('test category');
+$response->assertSeeText('低');
+$response->assertSeeText('contents of the test task');
 
 // リンクの確認
 // assertSeeは、デフォルトで探す文字列をHTMLエスケープするからです。
